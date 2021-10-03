@@ -15,14 +15,10 @@ public class RMIServer {
     
     public static void main(String args[]) 
     {
-        //System.setProperty("java.rmi.server.hostname","127.0.0.1");
         try {
-           
-            //InterfaceFigurinhas obj = (InterfaceFigurinhas) UnicastRemoteObject.exportObject(this, 0);
             Registry reg = LocateRegistry.createRegistry(1099);
             Naming.rebind("server", new RMIServerImple());
             System.out.println("Server ativo!");
-
         }
         catch (Exception e) {
             System.out.println("error: " + e.getMessage());

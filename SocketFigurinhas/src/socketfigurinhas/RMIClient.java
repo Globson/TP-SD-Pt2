@@ -43,7 +43,6 @@ public class RMIClient {
                 senha = sc.nextLine();
                 user = new Usuario(nome, senha);
                 boolean usercriado = RMI.cria_usuario(nome, senha);
-                //outObj.writeObject(user);
                 if(usercriado){
                     System.out.println("Usuario criado com sucesso!");
                     user = RMI.loga_usuario(nome, senha);     
@@ -59,8 +58,7 @@ public class RMIClient {
                     user = null;
                 }
                 
-                
-            //enviar requisição de verificar se nome esta disponivel e de criar novo usuario.
+               
             
             }else{
                 
