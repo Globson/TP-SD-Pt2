@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package socketfigurinhas;
-import java.rmi.Naming;
-import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
 import java.rmi.registry.LocateRegistry;
@@ -20,8 +18,6 @@ public class RMIClient {
         {
             Registry reg = LocateRegistry.getRegistry("127.0.0.1",1099);
             InterfaceFigurinhas RMI = (InterfaceFigurinhas) reg.lookup("server");
-            RMI.get_vendas().PrintaFigurinhasAVenda();
-            //InterfaceFigurinhas interf = (InterfaceFigurinhas) Naming.lookup("//localhost/figService");
             Scanner sc = new Scanner(System.in);
             Usuario user = null;
             VendaFigurinha Vendinha = null;

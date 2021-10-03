@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package socketfigurinhas;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
