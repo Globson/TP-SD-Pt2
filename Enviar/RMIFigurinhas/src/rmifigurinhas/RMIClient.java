@@ -20,6 +20,7 @@ public class RMIClient {
             InterfaceFigurinhas RMI = (InterfaceFigurinhas) reg.lookup("server");
             Scanner sc = new Scanner(System.in);
             Usuario user = null;
+            boolean login = false;
             VendaFigurinha Vendinha = null;
             System.out.println("\tOla, bem-vindo ao cliente do Alpokebum!");
 
@@ -41,21 +42,19 @@ public class RMIClient {
                 nome = sc.nextLine();
                 System.out.print("Entre com a senha:");
                 senha = sc.nextLine();
-                user = new Usuario(nome, senha);
                 boolean usercriado = RMI.cria_usuario(nome, senha);
                 if(usercriado){
                     System.out.println("Usuario criado com sucesso!");
-                    user = RMI.loga_usuario(nome, senha);     
-                    if(user == null){
-                        System.out.println("Erro ao logar!");
+                    login = RMI.loga_usuario(nome, senha);     
+                    if(login){
+                        System.out.println("Logado com sucesso!");
                     }
                     else{
-                        System.out.println("Logado com sucesso!");
+                        System.out.println("Erro ao logar!");
                     }
                 }
                 else{
                     System.out.println("Erro! Nome de usuario ja utilizado!");
-                    user = null;
                 }
                 
                
@@ -68,9 +67,9 @@ public class RMIClient {
                 nome = sc.nextLine();
                 System.out.print("Entre com a senha:");
                 senha = sc.nextLine();
-                user = RMI.loga_usuario(nome, senha);
+                login = RMI.loga_usuario(nome, senha);
             
-                if(user != null){
+                if(login){
                     System.out.println("Usuario logado com sucesso!");
                 }
                 else{
@@ -78,7 +77,11 @@ public class RMIClient {
                 }   
             }
             while(true){
-                if(user==null){break;}
+                if(!login){
+                    System.out.println("Erro! Voce nao esta autenticado!");
+                    break;
+                }
+                user = RMI.get_usuario();
                 System.out.println("\tMenu principal");
                 System.out.println("1 - Imprimir meu album");
                 System.out.println("2 - Comprar Coins");
@@ -98,7 +101,7 @@ public class RMIClient {
                     System.out.println("Erro! Entrada invalida!");
                 }
                 if(opcao==9){
-                    RMI.atualiza_usuario(user);
+                    RMI.atualiza_usuario();
                     System.out.println("Finalizando cliente do Alpokebum...");
                     //user.PrintaFigurinhas();
                     break;
@@ -110,13 +113,18 @@ public class RMIClient {
                     case(2):
                         System.out.println("Digite a quantidade de coins em REAIS que deseja comprar: ");
                         float valorcoins = sc.nextFloat();
-                        user.AdicionaCoins(valorcoins);
+                        boolean compra = RMI.compra_coins(valorcoins);
+                        if(compra){
+                            System.out.println("Coins comprados com sucesso!");
+                        }else{
+                            System.out.println("Erro! Voce nao esta logado!");
+                        }
                         break;
                     case(3):
                         System.out.println("Coins na carteira: "+user.GetCoins());
                         System.out.println("Digite a quantidade de pacotes a comprar: ");
                         int quantPac = sc.nextInt();
-                        if(user.CompraPacoteFigurinha(quantPac)){
+                        if(RMI.compra_pacotes(quantPac)){
                             System.out.println("Pacote(s) comprado com sucesso!");
                         }else{
                              System.out.println("Erro! Voce esta pobre!");   
@@ -127,14 +135,16 @@ public class RMIClient {
                         user.PrintaFigurinhas();
                         System.out.println("\nEntre com o numero da figurinha que deseja colar: ");
                         int numFig = sc.nextInt();
-                        if(user.ColaFigurinha(numFig)){
+                        if(RMI.cola_figurinha(numFig)){
                             System.out.println("Figurinha colada com sucesso!");
                         }else{
                             System.out.println("Erro! Voce nao tem essa figurinha disponivel ou ela ja esta colada!");
                         }      
                         break;
                     case(5):
-                        user.ColaTodasFigurinhas();
+                        if(RMI.cola_todas_figurinhas()){
+                            System.out.println("Todas as figurinhas disponiveis coladas!");
+                        }
                         break;
                     case(6):
                         Vendinha = RMI.get_vendas();
@@ -144,12 +154,12 @@ public class RMIClient {
                         System.out.println("Entre com o valor a vender:");
                         float valorfigv = sc.nextFloat();
                         
-                        if(Vendinha.ColocaFigurinhaAVenda(user, numfigv, valorfigv)){
+                        if(RMI.vende_figurinha(numfigv, valorfigv)){
                             System.out.println("Figurinha posta a venda com sucesso!");
                         }else{
                             System.out.println("Erro! Voce nao tem essa figurinha ou valor invalido!");
                         }
-                        RMI.atualiza_vendas(Vendinha);
+                        RMI.atualiza_vendas();
                         break;
                     case(7):
                         Vendinha = RMI.get_vendas();
@@ -159,12 +169,12 @@ public class RMIClient {
                         int numfigc = sc.nextInt();
                         System.out.println("Entre com o valor da figurinha que deseja comprar:");
                         float valorfigc = sc.nextFloat();
-                        if(Vendinha.CompraFigurinha(user, numfigc,valorfigc)){
+                        if(RMI.compra_figurinha(numfigc, valorfigc)){
                             System.out.println("Figurinha comprada com sucesso!");
                         }else{
                             System.out.println("Erro! Voce esta pobre ou essa figurinha nao esta disponivel!");
                         }
-                        RMI.atualiza_vendas(Vendinha);
+                        RMI.atualiza_vendas();
                         break;
                     case(8):
                         user.PrintaFigurinhas();
