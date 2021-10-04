@@ -114,7 +114,7 @@ public class Usuario implements Serializable{
     }
     
     public void ColaTodasFigurinhas(){
-        for(int i=0;i<this.figurinhas_sem_colar.size();i++){
+        for(int i=this.figurinhas_sem_colar.size()-1;i>=0;i--){
             this.ColaFigurinha(this.figurinhas_sem_colar.get(i));
         }
         System.out.println("Todas as figurinhas disponiveis coladas!");
