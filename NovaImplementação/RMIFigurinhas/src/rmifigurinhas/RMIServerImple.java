@@ -29,6 +29,9 @@ public class RMIServerImple extends UnicastRemoteObject implements InterfaceFigu
     }
     
     public boolean loga_usuario(String nome,String senha) throws RemoteException{
+        if(this.index_user_logado != -1){
+           atualiza_usuario();
+        }
         boolean user_encontrado = false;
         System.out.println("Credenciais recebidas: "+ nome+" - "+senha);
         for(int i=0;i<ListaUsuarios.size();i++){

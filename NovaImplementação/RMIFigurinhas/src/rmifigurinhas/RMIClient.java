@@ -47,10 +47,10 @@ public class RMIClient {
                     System.out.println("Usuario criado com sucesso!");
                     login = RMI.loga_usuario(nome, senha);     
                     if(login){
-                        System.out.println("Erro ao logar!");
+                        System.out.println("Logado com sucesso!");
                     }
                     else{
-                        System.out.println("Logado com sucesso!");
+                        System.out.println("Erro ao logar!");
                     }
                 }
                 else{
